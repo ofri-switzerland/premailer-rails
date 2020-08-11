@@ -6,7 +6,10 @@ class Premailer
 
         def load(url)
           return unless defined?(::Webpacker)
-          File.read(File.join('public', Webpacker.manifest.lookup(url)))
+
+          asset_url = Webpacker.manifest.lookup(url.to_s)
+
+          File.read(File.join('public', asset_url)) if asset_url.present?
         end
       end
     end
