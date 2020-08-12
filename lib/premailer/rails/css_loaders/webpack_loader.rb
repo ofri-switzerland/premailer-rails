@@ -7,9 +7,14 @@ class Premailer
         def load(url)
           return unless defined?(::Webpacker)
 
-          asset_url = Webpacker.manifest.lookup(url.to_s)
+          path = Webpacker.manifest.lookup(url)
+          return unless path
 
-          File.read(File.join('public', asset_url)) if asset_url.present?
+          if Webpacker.config.compile?
+            URI.open(url_to_asset(path)).read
+          else
+            Webpacker.config.public_output_path.join(path).read
+          end
         end
       end
     end
