@@ -3,6 +3,7 @@ class Premailer
     module CSSLoaders
       module WebpackLoader
         extend self
+        extend ActionView::Helpers::AssetUrlHelper
 
         def load(url)
           return unless defined?(::Webpacker)
@@ -13,7 +14,7 @@ class Premailer
           if Webpacker.config.compile?
             URI.open(url_to_asset(path)).read
           else
-            Webpacker.config.public_output_path.join(path).read
+            File.join(Webpacker.config.public_path, path).read
           end
         end
       end
